@@ -33,6 +33,8 @@ def read_data():
         id_df_dict[id] = df
 
     documents = read_content()
+    print 'Number news =', len(documents)
+
     count = 0
     for id_doc in documents:
         count += 1
@@ -102,8 +104,6 @@ def test_merge2():
     print 'Before merge, size(clusters) =', len(clusters), 'size(center_clusters) =', len(center_clusters)
     merge_cluster2.merge_clusters_with_threshold(clusters, center_clusters, size_clusters, threshold)
     print 'After merge, size(clusters) =', len(clusters), 'size(center_clusters) =', len(center_clusters)
-
-    print 'Tam oc cho'
 
     for cluster_id in clusters:
         cluster = clusters[cluster_id]

@@ -2,10 +2,15 @@ import my_connection, parameter, my_util
 import pickle
 from gensim.corpora import Dictionary
 
-
 # query tokenizer from news table
 # remove invalid token in a document
 # save Dictionary (gensim) and News into text file
+
+my_catid = 1
+my_fromdate = '2016-09-09'
+my_todate = '2016-09-09'
+
+
 def get_data_tokenizer(fromdate, todate):
     print 'Starting get and save data from mysql-server into local folder....'
 
@@ -15,9 +20,8 @@ def get_data_tokenizer(fromdate, todate):
     connection = my_connection.getConnection()
     cursor = connection.cursor()
 
-    query = 'SELECT id, vntokenizer FROM news WHERE create_time BETWEEN ' + '\'' + fromdate + '\' AND \'' + todate + '\';'
+    query = 'SELECT id, vntokenizer, catid FROM news WHERE create_time BETWEEN ' + '\'' + fromdate + '\' AND \'' + todate + '\';'
     print query
-    print 'tam oc cho'
 
     cursor.execute(query)
     rows = cursor.fetchall()
@@ -29,6 +33,7 @@ def get_data_tokenizer(fromdate, todate):
     for row in rows:
         id = row[0]
         tokenizer = row[1]
+        catid = row[2]
         if tokenizer != None:
             tokenizer = tokenizer.lower()
             count += 1
@@ -40,7 +45,8 @@ def get_data_tokenizer(fromdate, todate):
                 if my_util.check_valid_token(token):
                     valid_token_list.append(token)
             token_dictionary.add_documents([valid_token_list])
-            data[id] = valid_token_list
+            if catid == my_catid:
+                data[id] = valid_token_list
 
     my_connection.closeConnection(connection)
 
@@ -54,9 +60,7 @@ def get_data_tokenizer(fromdate, todate):
 
 
 def main():
-    fromdate = '2016-09-07'
-    todate = '2016-09-07'
-    get_data_tokenizer(fromdate, todate)
+    get_data_tokenizer(my_fromdate, my_todate)
 
 
 if __name__ == '__main__':

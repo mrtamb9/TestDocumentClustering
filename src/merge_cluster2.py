@@ -44,9 +44,12 @@ def merge_clusters_with_threshold(clusters, center_clusters, size_clusters, thre
     # build list pair similarities
     print 'Starting build list pair similarities ....'
     similarities = dict()
+    count = 0
     for cluster_id1 in clusters:
         for cluster_id2 in clusters:
             if cluster_id1 < cluster_id2:
+                count += 1
+                print count
                 pair_clusters = (cluster_id1, cluster_id2)
                 similarity = my_util.get_simiarity(center_clusters[cluster_id1], center_clusters[cluster_id2])
                 similarities[pair_clusters] = similarity
@@ -59,7 +62,6 @@ def merge_clusters_with_threshold(clusters, center_clusters, size_clusters, thre
             merge_clusters_gte_threshold(clusters, center_clusters, size_clusters, similarities, my_threshold)
             clusters_size_after = len(clusters)
             print 'Clusters size after merge =', len(clusters)
-            print 'tam oc cho'
             decrease = clusters_size_before - clusters_size_after
             if decrease == 0:
                 break
