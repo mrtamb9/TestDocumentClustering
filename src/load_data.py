@@ -4,6 +4,8 @@ import parameter, my_util, merge_cluster1, merge_cluster2
 import pickle
 from gensim.corpora import Dictionary
 
+my_threshold = 0.7
+
 
 def read_token_dictionary():
     token_dictionary = Dictionary.load_from_text('..' + parameter.FILE_DICTIONARY)
@@ -38,9 +40,9 @@ def read_data():
     count = 0
     for id_doc in documents:
         count += 1
-        print count
-        # if count > 1000:
-        #     break
+        if count % 100 == 0:
+            print count
+
         document = documents[id_doc]
         vector = dict()
         for token in document:
@@ -100,7 +102,7 @@ def test_merge2():
         clusters[cluster_id] = [cluster_id]
         size_clusters[cluster_id] = 1
 
-    threshold = 0.4
+    threshold = my_threshold
     print 'Before merge, size(clusters) =', len(clusters), 'size(center_clusters) =', len(center_clusters)
     merge_cluster2.merge_clusters_with_threshold(clusters, center_clusters, size_clusters, threshold)
     print 'After merge, size(clusters) =', len(clusters), 'size(center_clusters) =', len(center_clusters)
@@ -110,8 +112,12 @@ def test_merge2():
         print cluster
 
 
+def test_merge3():
+    # read data
+    vectortfidfs = read_data()  # vectors tfidf
+
 def main():
-    test_merge2()
+    test_merge3()
 
 
 if __name__ == '__main__':
