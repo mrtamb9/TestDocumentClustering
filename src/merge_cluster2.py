@@ -22,8 +22,8 @@ def merge_cluster2_into_cluster1(clusters, center_clusters, similarities, size_c
                                                                center_clusters[cluster_id2],
                                                                size_clusters[cluster_id1],
                                                                size_clusters[cluster_id2])
-    size_clusters[cluster_id1] = size_clusters[cluster_id1] + size_clusters[cluster_id2]
 
+    size_clusters[cluster_id1] = size_clusters[cluster_id1] + size_clusters[cluster_id2]
     del clusters[cluster_id2]
     del center_clusters[cluster_id2]
     del size_clusters[cluster_id2]

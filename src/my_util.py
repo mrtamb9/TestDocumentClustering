@@ -90,7 +90,7 @@ def get_center_cluster2(center_vector1, center_vector2, size1, size2):
                 value2 = center_vector2[token_id2]
                 center_vector_of_cluster[token_id1] = size1 * value1 + size2 * value2
 
-    N = size1 * size2
+    N = size1 + size2
     if N == 0:
         return None
 

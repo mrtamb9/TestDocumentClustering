@@ -1,10 +1,10 @@
 # coding=utf-8
 # load dictionary and news that saved in local folder ../data/
-import parameter, my_util, merge_cluster1, merge_cluster2
+import parameter, my_util, merge_cluster1, merge_cluster2, merge_cluster3
 import pickle
 from gensim.corpora import Dictionary
 
-my_threshold = 0.7
+my_threshold = 0.4
 
 
 def read_token_dictionary():
@@ -115,6 +115,25 @@ def test_merge2():
 def test_merge3():
     # read data
     vectortfidfs = read_data()  # vectors tfidf
+    center_clusters = dict()
+    clusters = dict()
+    size_clusters = dict()
+    for vector_id in vectortfidfs.keys():
+        vector = vectortfidfs[vector_id]
+        cluster_id = vector_id
+        clusters[cluster_id] = [cluster_id]
+        center_clusters[cluster_id] = vector
+        size_clusters[cluster_id] = 1
+
+    threshold = my_threshold
+    print 'Before clustering, size(clusters) =', len(clusters)
+    merge_cluster3.merge_clusters_with_threshold(clusters, center_clusters, size_clusters, threshold)
+    print 'After clustering, size(clusters) =', len(clusters)
+
+    for cluster_id in clusters:
+        cluster = clusters[cluster_id]
+        print cluster
+
 
 def main():
     test_merge3()
