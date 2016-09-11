@@ -31,7 +31,7 @@ def merge_cluster2_into_cluster1(clusters, center_clusters, size_clusters, simil
             other_id = pair[0]
             if cluster_id1 == pair[0]:
                 other_id = pair[1]
-            my_util.get_simiarity(center_clusters[cluster_id1], center_clusters[other_id])
+            my_util.get_similarity(center_clusters[cluster_id1], center_clusters[other_id])
 
 
 def merge_clusters_with_threshold(clusters, center_clusters, size_clusters, threshold):
@@ -49,7 +49,7 @@ def merge_clusters_with_threshold(clusters, center_clusters, size_clusters, thre
                 print count, '/', N
             cluster_id2 = cluster_ids[index2]
             pair = (cluster_id1, cluster_id2)
-            similarity = my_util.get_simiarity(center_clusters[cluster_id1], center_clusters[cluster_id2])
+            similarity = my_util.get_similarity(center_clusters[cluster_id1], center_clusters[cluster_id2])
             similarities[pair] = similarity
 
     while True:
@@ -64,6 +64,9 @@ def merge_clusters_with_threshold(clusters, center_clusters, size_clusters, thre
         merge_cluster2_into_cluster1(clusters, center_clusters, size_clusters, similarities, cluster_id1, cluster_id2)
 
 
+
+
+
 if __name__ == '__main__':
     my_dict = dict()
     my_dict[(1, 2)] = 2
@@ -72,3 +75,4 @@ if __name__ == '__main__':
 
     print my_dict
     print get_key_max_value(my_dict)
+    print 'All done!'

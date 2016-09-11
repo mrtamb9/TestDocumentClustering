@@ -1,6 +1,7 @@
 # coding=utf-8
 # load dictionary and news that saved in local folder ../data/
 import parameter, my_util, merge_cluster1, merge_cluster2, merge_cluster3
+import split_clusters
 import pickle
 from gensim.corpora import Dictionary
 
@@ -133,6 +134,12 @@ def test_merge3():
     for cluster_id in clusters:
         cluster = clusters[cluster_id]
         print cluster
+        check_quality = split_clusters.check_quality_cluster(cluster, center_clusters[cluster_id], vectortfidfs,
+                                                             threshold_quality=0.4)
+        if check_quality == False:
+            (cluster1, cluster2) = split_clusters.split_cluster(cluster, vectortfidfs)
+            print 'Split', cluster1
+            print 'Split', cluster2
 
 
 def main():

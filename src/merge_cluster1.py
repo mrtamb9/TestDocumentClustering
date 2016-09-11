@@ -30,7 +30,7 @@ def merge_2_clusters_into_1(clusters, center_clusters, dict_similarity, cluster_
         cluster2[id_vector] = vector
 
     clusters[cluster_id2] = cluster2
-    center_clusters[cluster_id2] = my_util.get_center_cluster(cluster2)
+    center_clusters[cluster_id2] = my_util.get_center_cluster1(cluster2)
 
     # remove from dict_similarity
     list_del_key = dict_similarity.keys()

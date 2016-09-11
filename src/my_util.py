@@ -41,7 +41,7 @@ def get_vector(vector, id_df_dict, N):
     return vector
 
 
-def get_simiarity(vector1, vector2):
+def get_similarity(vector1, vector2):
     up = 0;
     down1 = 0
     down2 = 0
@@ -64,7 +64,7 @@ def get_simiarity(vector1, vector2):
     return 0
 
 
-def get_center_cluster(cluster):
+def get_center_cluster1(cluster):
     center_vector_of_cluster = dict()
     for id_vector in cluster:
         vector = cluster[id_vector]
@@ -98,3 +98,4 @@ def get_center_cluster2(center_vector1, center_vector2, size1, size2):
         center_vector_of_cluster[token_id] = center_vector_of_cluster[token_id] * 1.0 / N
 
     return center_vector_of_cluster
+
