@@ -5,8 +5,6 @@ import split_clusters
 import pickle
 from gensim.corpora import Dictionary
 
-my_threshold = 0.4
-
 
 def read_token_dictionary():
     token_dictionary = Dictionary.load_from_text('..' + parameter.FILE_DICTIONARY)
@@ -43,6 +41,8 @@ def read_data():
         count += 1
         if count % 100 == 0:
             print count
+            # if count > 400:
+            #     break
 
         document = documents[id_doc]
         vector = dict()
@@ -103,9 +103,8 @@ def test_merge2():
         clusters[cluster_id] = [cluster_id]
         size_clusters[cluster_id] = 1
 
-    threshold = my_threshold
     print 'Before merge, size(clusters) =', len(clusters), 'size(center_clusters) =', len(center_clusters)
-    merge_cluster2.merge_clusters_with_threshold(clusters, center_clusters, size_clusters, threshold)
+    merge_cluster2.merge_clusters_with_threshold(clusters, center_clusters, size_clusters, threshold=0.4)
     print 'After merge, size(clusters) =', len(clusters), 'size(center_clusters) =', len(center_clusters)
 
     for cluster_id in clusters:
@@ -126,20 +125,34 @@ def test_merge3():
         center_clusters[cluster_id] = vector
         size_clusters[cluster_id] = 1
 
-    threshold = my_threshold
     print 'Before clustering, size(clusters) =', len(clusters)
-    merge_cluster3.merge_clusters_with_threshold(clusters, center_clusters, size_clusters, threshold)
+    merge_cluster3.merge_clusters_with_threshold(clusters, center_clusters, size_clusters, threshold=0.4)
     print 'After clustering, size(clusters) =', len(clusters)
 
-    for cluster_id in clusters:
+    for cluster_id in clusters.keys():
         cluster = clusters[cluster_id]
+        print len(cluster)
         print cluster
         check_quality = split_clusters.check_quality_cluster(cluster, center_clusters[cluster_id], vectortfidfs,
-                                                             threshold_quality=0.4)
+                                                             threshold_quality=0.5)
         if check_quality == False:
-            (cluster1, cluster2) = split_clusters.split_cluster(cluster, vectortfidfs)
-            print 'Split', cluster1
-            print 'Split', cluster2
+            # if True:
+            bad_clusters = dict()
+            bad_center_clusters = dict()
+            bad_size_clusters = dict()
+            for bad_vector_id in cluster:
+                vector = vectortfidfs[bad_vector_id]
+                bad_cluster_id = bad_vector_id
+                bad_clusters[bad_cluster_id] = [bad_cluster_id]
+                bad_center_clusters[bad_cluster_id] = vector
+                bad_size_clusters[bad_cluster_id] = 1
+
+            merge_cluster3.merge_clusters_with_threshold(bad_clusters, bad_center_clusters, bad_size_clusters,
+                                                         threshold=0.5)
+            for sub_cluster_id in bad_clusters:
+                sub_cluster = bad_clusters[sub_cluster_id]
+                print 'Split', sub_cluster
+                print len(sub_cluster)
 
 
 def main():

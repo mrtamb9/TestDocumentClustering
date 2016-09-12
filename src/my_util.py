@@ -58,7 +58,8 @@ def get_similarity(vector1, vector2):
 
     down = down1 * down2
     if down > 0:
-        similarity = up * 1.0 / down
+        down = math.sqrt(down)
+        similarity = up / float(down)
         return similarity
 
     return 0
@@ -84,18 +85,24 @@ def get_center_cluster1(cluster):
 def get_center_cluster2(center_vector1, center_vector2, size1, size2):
     center_vector_of_cluster = dict()
     for token_id1 in center_vector1:
-        value1 = center_vector1[token_id1]
-        for token_id2 in center_vector2:
-            if token_id1 == token_id2:
-                value2 = center_vector2[token_id2]
-                center_vector_of_cluster[token_id1] = size1 * value1 + size2 * value2
+        center_vector_of_cluster[token_id1] = 0
+    for token_id2 in center_vector2:
+        center_vector_of_cluster[token_id2] = 0
+
+    for token_id in center_vector_of_cluster:
+        value = 0
+        if token_id in center_vector1:
+            value += center_vector1[token_id] * size1
+        if token_id in center_vector2:
+            value += center_vector2[token_id] * size2
+        center_vector_of_cluster[token_id] = value
 
     N = size1 + size2
     if N == 0:
         return None
 
     for token_id in center_vector_of_cluster:
-        center_vector_of_cluster[token_id] = center_vector_of_cluster[token_id] * 1.0 / N
+        center_vector_of_cluster[token_id] = center_vector_of_cluster[token_id] / float(N)
 
     return center_vector_of_cluster
 

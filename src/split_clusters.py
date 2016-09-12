@@ -1,14 +1,31 @@
 import my_util
 
 
+# get corehence of cluster
+def get_coherence_of_cluster(cluster, center_cluster, vectortfidfds):
+    coherence = 0
+    for vector_id in cluster:
+        vector = vectortfidfds[vector_id]
+        similarity = my_util.get_similarity(vector, center_cluster)
+        coherence += similarity
+
+    if coherence == 0:
+        print "Error: "
+        print cluster
+        print center_cluster
+        exit()
+        return 0
+
+    coherence = coherence / float(len(cluster))
+    return coherence
+
+
 # kiem tra chat luong cum:
 # - do khoang cach tu cac vector den center_cluster
 def check_quality_cluster(cluster, center_cluster, vectortfidfs, threshold_quality):
-    for vector_id in cluster:
-        vector = vectortfidfs[vector_id]
-        similarity = my_util.get_similarity(vector, center_cluster)
-        if similarity < threshold_quality:
-            return False
+    coherence = get_coherence_of_cluster(cluster, center_cluster, vectortfidfs)
+    if coherence < threshold_quality:
+        return False
     return True
 
 
@@ -30,6 +47,7 @@ def split_cluster(cluster, vectortfidfs):
                 min_similarity = similarity
                 min_pair = (vector_id1, vector_id2)
 
+    print 'Min pair =', min_pair
     # split cluster into 2 clusters
     vector_id1 = min_pair[0]
     vector_id2 = min_pair[1]
