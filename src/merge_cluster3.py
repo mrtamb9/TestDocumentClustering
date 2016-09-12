@@ -6,16 +6,6 @@ def get_key_max_value(my_dict):
     return max(my_dict.iteritems(), key=operator.itemgetter(1))[0]
 
 
-def get_list_threshold(threshold, max_threshold=1.0):
-    list_thresholds = list()
-    temp_threshold = max_threshold
-    while temp_threshold >= threshold:
-        list_thresholds.append(temp_threshold)
-        temp_threshold = temp_threshold - 0.05
-    list_thresholds = sorted(list_thresholds, reverse=True)
-    return list_thresholds
-
-
 def merge_cluster2_into_cluster1(clusters, center_clusters, size_clusters, similarities, cluster_id1, cluster_id2):
     # print 'Merge cluster (', cluster_id1, ',', cluster_id2, ')'
     cluster1 = clusters[cluster_id1]
@@ -63,21 +53,17 @@ def merge_clusters_with_threshold(clusters, center_clusters, size_clusters, thre
             similarity = my_util.get_similarity(center_clusters[cluster_id1], center_clusters[cluster_id2])
             similarities[pair] = similarity
 
-    list_thresholds = get_list_threshold(threshold, 1.0)
-    print list_thresholds
-    for my_threshold in list_thresholds:
-        print 'My threshold =', my_threshold
-        while True:
-            pair = get_key_max_value(similarities)
-            max_similarity = similarities[pair]
-            print pair, '=', max_similarity
-            if max_similarity < my_threshold:
-                print 'Break while loop: max_similarity < threshold'
-                break
-            cluster_id1 = pair[0]
-            cluster_id2 = pair[1]
-            merge_cluster2_into_cluster1(clusters, center_clusters, size_clusters, similarities, cluster_id1,
-                                         cluster_id2)
+    while True:
+        pair = get_key_max_value(similarities)
+        max_similarity = similarities[pair]
+        print pair, '=', max_similarity
+        if max_similarity < threshold:
+            print 'Break while loop: max_similarity < threshold'
+            break
+        cluster_id1 = pair[0]
+        cluster_id2 = pair[1]
+        merge_cluster2_into_cluster1(clusters, center_clusters, size_clusters, similarities, cluster_id1,
+                                     cluster_id2)
 
 
 if __name__ == '__main__':

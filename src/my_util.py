@@ -1,6 +1,6 @@
 # coding=utf-8
 
-import math
+import math, operator
 
 VN_STR = ['_', u'a', u'b', u'c', u'd', u'e', u'f', u'g', u'h', u'i', u'j', u'k', u'l', u'm', u'n', u'o', u'p', u'q',
           u'r', u's', u't', u'u', u'v', u'w', u'x', u'y', u'z', u'á', u'à', u'ả', u'ã', u'ạ', u'ă', u'ắ', u'ặ', u'ằ',
@@ -8,6 +8,10 @@ VN_STR = ['_', u'a', u'b', u'c', u'd', u'e', u'f', u'g', u'h', u'i', u'j', u'k',
           u'ễ', u'ệ', u'í', u'ì', u'ỉ', u'ĩ', u'ị', u'ó', u'ò', u'ỏ', u'õ', u'ọ', u'ô', u'ố', u'ồ', u'ổ', u'ỗ', u'ộ',
           u'ơ', u'ớ', u'ờ', u'ở', u'ỡ', u'ợ', u'ú', u'ù', u'ủ', u'ũ', u'ụ', u'ư', u'ứ', u'ừ', u'ử', u'ữ', u'ự', u'ý',
           u'ỳ', u'ỷ', u'ỹ', u'ỵ']
+
+
+def get_key_max_value(my_dict):
+    return max(my_dict.iteritems(), key=operator.itemgetter(1))[0]
 
 
 def check_valid_character(char):
@@ -105,4 +109,3 @@ def get_center_cluster2(center_vector1, center_vector2, size1, size2):
         center_vector_of_cluster[token_id] = center_vector_of_cluster[token_id] / float(N)
 
     return center_vector_of_cluster
-

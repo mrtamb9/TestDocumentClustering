@@ -1,6 +1,7 @@
 # coding=utf-8
+# Not user, version 4 will improve
 # load dictionary and news that saved in local folder ../data/
-import parameter, my_util, merge_cluster1, merge_cluster2, merge_cluster3
+import parameter, my_util, merge_cluster1, merge_cluster2, merge_cluster3, merge_cluster4
 import split_clusters
 import pickle
 from gensim.corpora import Dictionary
@@ -155,8 +156,30 @@ def test_merge3():
                 print len(sub_cluster)
 
 
+def test_merge4():
+    # read data
+    vectortfidfs = read_data()  # vectors tfidf
+    center_clusters = dict()
+    clusters = dict()
+    size_clusters = dict()
+    for vector_id in vectortfidfs.keys():
+        vector = vectortfidfs[vector_id]
+        cluster_id = vector_id
+        clusters[cluster_id] = [cluster_id]
+        center_clusters[cluster_id] = vector
+        size_clusters[cluster_id] = 1
+
+    print 'Before clustering, size(clusters) =', len(clusters)
+    (clusters, center_clusters, size_clusters) = merge_cluster4.clustering_with_threshold(clusters, center_clusters, size_clusters, threshold=0.4)
+    print 'After clustering, size(clusters) =', len(clusters)
+
+    for id_cluster in clusters:
+        cluster = clusters[id_cluster]
+        print cluster
+        print len(cluster)
+
 def main():
-    test_merge3()
+    test_merge4()
 
 
 if __name__ == '__main__':
